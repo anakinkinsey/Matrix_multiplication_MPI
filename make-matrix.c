@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 	int columns;
 	int lower;
 	int upper;
-	int *myArray;
+	double *myArray;
 	char *in;
 
 	while((opt = getopt(argc, argv, "m:n:o:l:u:")) != -1)
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 	
 	write_matrix(in, rows, columns, myArray);
 	
-	//free(myArray);
+	free(myArray);
 	
 	return 0;
 }

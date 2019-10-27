@@ -1,18 +1,9 @@
-<<<<<<< HEAD
-/**
- * 473 Final Project
- * Anakin Kinsey & Cory Rothenberger
- * 10/27/2019
- * Fall 2019
-**/
-=======
 /*
 	Cory Rothenberger & Anakin Kinsey
 	CSCI 473
 	October 27th
 	Team Project
 */
->>>>>>> 122603ccfddcdb0f4b94ef75775a242152caa125
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -30,7 +21,7 @@ int main(int argc, char *argv[])
         int opt;
         int n, m;
         char* in;
-        int* matrix;
+        double* matrix;
 
        while((opt = getopt(argc, argv, "i:")) != -1)
 	{
@@ -51,6 +42,8 @@ int main(int argc, char *argv[])
         read_matrix(in, &m, &n, &matrix);
 
         print_matrix(m, n, matrix);
+	
+	free(matrix);
     }
     
 

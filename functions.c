@@ -10,36 +10,36 @@
 #include <time.h>
 
 
-void make_matrix(int m, int n, int l, int u, int** matrix)
+void make_matrix(int m, int n, int l, int u, double** matrix)
 {
-    *matrix = (int*)malloc(sizeof(int)*(n*m));
+    *matrix = (double*)malloc(sizeof(double)*(n*m));
     int i;
-    //srand(time(0));
     srand(time(0));
     for(i = 0; i < (m*n); i++)
     {
-        (*matrix)[i] = rand() % ((u + 1) - l) + l;
+        (*matrix)[i] = (double) (rand() % ((u + 1) - l) + l);
     }
 
 
 
 }
 
-void write_matrix(char* file_name, int m, int n, int* matrix)
+void write_matrix(char* file_name, int m, int n, double* matrix)
 {
     FILE* file = fopen(file_name, "w");
-    fwrite(&m, sizeof(int), 1, file);
-    fwrite(&n, sizeof(int), 1, file);
-    fwrite(matrix, sizeof(int), (n*m), file);
+    fwrite(&m, sizeof(double), 1, file);
+    fwrite(&n, sizeof(double), 1, file);
+    fwrite(matrix, sizeof(double), (n*m), file);
+	fclose(file);
 
 }
 
-void print_matrix(int m, int n, int* matrix)
+void print_matrix(int m, int n, double* matrix)
 {
     int i;
     for(i = 0; i < m*n; i++)
     {
-            printf("%d ", matrix[i]);
+            printf("%0.2f ", matrix[i]);
         	if((i+1)%n == 0)
         	{
             		printf("\n");
@@ -48,7 +48,7 @@ void print_matrix(int m, int n, int* matrix)
 
 }
 
-void read_matrix(char* file_name, int* m, int* n, int** matrix)
+void read_matrix(char* file_name, int* m, int* n, double** matrix)
 {
     FILE* file;
     file = fopen(file_name, "rb");
@@ -58,18 +58,18 @@ void read_matrix(char* file_name, int* m, int* n, int** matrix)
         printf("File does not exist");
         exit(0);
     }
-    fread(m, sizeof(int), 1, file);
-    fread(n, sizeof(int), 1, file);
-    *matrix = (int*)malloc(sizeof(int)*((*n)*(*m)));
-    fread(*matrix, sizeof(int), ((*n)*(*m)), file);
+    fread(m, sizeof(double), 1, file);
+    fread(n, sizeof(double), 1, file);
+    *matrix = (double*)malloc(sizeof(double)*((*n)*(*m)));
+    fread(*matrix, sizeof(double), ((*n)*(*m)), file);
 
-
+	fclose(file);
 
 }
 
-void matrix_multiply(int m, int n, int x, int y, int* matrix1, int* matrix2, int ** matrix_out)
+void matrix_multiply(int m, int n, int x, int y, double* matrix1, double* matrix2, double ** matrix_out)
 {
-    *matrix_out = (int*)malloc(sizeof(int) * (m*y));
+    *matrix_out = (double*)malloc(sizeof(double) * (m*y));
     int row, column, row_traverser, total;
     //int row_array[m];
     //int column_array[n];  
