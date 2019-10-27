@@ -20,40 +20,48 @@ int main(int argc, char **argv)
 	double *myArray;
 	char *in;
 
-	while((opt = getopt(argc, argv, "m:n:o:l:u:")) != -1)
+	if(argc < 11)
+    	{
+        printf("The proper usage is './make-matrix -m ## -n ## -l ## -u ## -o outputFile");
+        exit(0);
+    	}
+	else
 	{
-		switch(opt)
-		{	
-			case'l':
-				lower = atoi(optarg);
-			break;
-			case'u':
-				upper = atoi(optarg);
-			break;
-			case'm':
-				rows = atoi(optarg);
-			break;
-			case'n':
-				columns = atoi(optarg);
-			break;
-			case'o':
-				in = optarg;
-			break;
-			case '?':
-				printf("Incorrect Input \nCorrect Usage: ");
-				printf("./make-matrix -m ## -n ## -l ## -u ## -o output_file\n");
-				printf("Where m = # of rows, n = # of columns");
-				exit(0);
-			break;
-			
+
+		while((opt = getopt(argc, argv, "m:n:o:l:u:")) != -1)
+		{
+			switch(opt)
+			{	
+				case'l':
+					lower = atoi(optarg);
+				break;
+				case'u':
+					upper = atoi(optarg);
+				break;
+				case'm':
+					rows = atoi(optarg);
+				break;
+				case'n':
+					columns = atoi(optarg);
+				break;
+				case'o':
+					in = optarg;
+				break;
+				case '?':
+					printf("Incorrect Input \nCorrect Usage: ");
+					printf("./make-matrix -m ## -n ## -l ## -u ## -o output_file\n");
+					printf("Where m = # of rows, n = # of columns");
+					exit(0);
+				break;
+				
+			}
 		}
+
+		make_matrix(rows,columns,lower,upper,&myArray);
+
+		write_matrix(in, rows, columns, myArray);
+
+		free(myArray);
 	}
-	
-	make_matrix(rows,columns,lower,upper,&myArray);
-	
-	write_matrix(in, rows, columns, myArray);
-	
-	free(myArray);
-	
 	return 0;
 }
