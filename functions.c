@@ -39,12 +39,20 @@ void print_matrix(int m, int n, int* matrix)
     int i;
     for(i = 0; i < m*n; i++)
     {
+<<<<<<< HEAD
         printf("%d", matrix[i]);
         if((i+1)%n == 0)
         {
             printf("\n");
         }
         
+=======
+            printf("%d ", matrix[i]);
+        	if((i+1)%n == 0)
+        	{
+            		printf("\n");
+        	}
+>>>>>>> 122603ccfddcdb0f4b94ef75775a242152caa125
     }
 
 }
