@@ -1,3 +1,9 @@
+/**
+ * 473 Final Project
+ * Anakin Kinsey & Cory Rothenberger
+ * 10/27/2019
+ * Fall 2019
+**/
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

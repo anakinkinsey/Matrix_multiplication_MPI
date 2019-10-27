@@ -1,3 +1,9 @@
+/**
+ * 473 Final Project
+ * Anakin Kinsey & Cory Rothenberger
+ * 10/27/2019
+ * Fall 2019
+**/
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -33,11 +39,11 @@ void print_matrix(int m, int n, int* matrix)
     int i;
     for(i = 0; i < m*n; i++)
     {
+        printf("%d", matrix[i]);
         if((i+1)%n == 0)
         {
             printf("\n");
         }
-            printf("%d", matrix[i]);
         
     }
 
