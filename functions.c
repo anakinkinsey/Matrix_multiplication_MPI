@@ -39,20 +39,11 @@ void print_matrix(int m, int n, int* matrix)
     int i;
     for(i = 0; i < m*n; i++)
     {
-<<<<<<< HEAD
-        printf("%d", matrix[i]);
-        if((i+1)%n == 0)
-        {
-            printf("\n");
-        }
-        
-=======
             printf("%d ", matrix[i]);
         	if((i+1)%n == 0)
         	{
             		printf("\n");
         	}
->>>>>>> 122603ccfddcdb0f4b94ef75775a242152caa125
     }
 
 }
@@ -75,3 +66,25 @@ void read_matrix(char* file_name, int* m, int* n, int** matrix)
 
 
 }
+
+void matrix_multiply(int m, int n, int x, int y, int* matrix1, int* matrix2, int ** matrix_out)
+{
+    *matrix_out = (int*)malloc(sizeof(int) * (m*y));
+    int row, column, row_traverser, total;
+    //int row_array[m];
+    //int column_array[n];  
+    for(row = 0; row < m; row++)
+    {
+        for(column = 0; column < y; column++)
+        {
+            total = 0;
+            for(row_traverser = 0; row_traverser < n; row_traverser++)
+            {
+                total += matrix1[row * n + row_traverser] * matrix2[row_traverser * y + column];
+            }
+            (*matrix_out)[row * y + column] = total;
+        } 
+    }
+}
+
+
