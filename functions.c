@@ -33,12 +33,11 @@ void print_matrix(int m, int n, int* matrix)
     int i;
     for(i = 0; i < m*n; i++)
     {
-        if((i+1)%n == 0)
-        {
-            printf("\n");
-        }
-            printf("%d", matrix[i]);
-        
+            printf("%d ", matrix[i]);
+        	if((i+1)%n == 0)
+        	{
+            		printf("\n");
+        	}
     }
 
 }
