@@ -80,8 +80,8 @@ int main(int argc, char *argv[])
 	totalTime = ((double) (tt2 - tt1)) / CLOCKS_PER_SEC;
 	mathTime =((double) (endMath - startMath)) / CLOCKS_PER_SEC;
 	
-	mflops1 = (8 * (firstMR * secondMC))/mathTime;
-	mflops2 = (8 * (firstMR * secondMC))/totalTime;
+	mflops1 = ((8 * (firstMR * secondMC))/mathTime)/1000000;
+	mflops2 = ((8 * (firstMR * secondMC))/totalTime)/1000000;
 
 	printf("Time doing matrix multiplication: %f \n", mathTime);
 	printf("Time doing file IO: %f \n", ioTime);
