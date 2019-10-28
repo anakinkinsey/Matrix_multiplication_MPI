@@ -63,6 +63,7 @@ int main(int argc, char *argv[])
 	if(firstMC != secondMR)
 	{
 		printf("The dimensions %d x %d and %d x %d are not compatible\n", firstMR, firstMC, secondMR, secondMC);
+		exit(0);
 	}
 
 	startMath = clock();

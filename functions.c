@@ -27,8 +27,8 @@ void make_matrix(int m, int n, int l, int u, double** matrix)
 void write_matrix(char* file_name, int m, int n, double* matrix)
 {
     FILE* file = fopen(file_name, "w");
-    fwrite(&m, sizeof(double), 1, file);
-    fwrite(&n, sizeof(double), 1, file);
+    fwrite(&m, sizeof(int), 1, file);
+    fwrite(&n, sizeof(int), 1, file);
     fwrite(matrix, sizeof(double), (n*m), file);
 	fclose(file);
 
@@ -58,8 +58,8 @@ void read_matrix(char* file_name, int* m, int* n, double** matrix)
         printf("File does not exist");
         exit(0);
     }
-    fread(m, sizeof(double), 1, file);
-    fread(n, sizeof(double), 1, file);
+    fread(m, sizeof(int), 1, file);
+    fread(n, sizeof(int), 1, file);
     *matrix = (double*)malloc(sizeof(double)*((*n)*(*m)));
     fread(*matrix, sizeof(double), ((*n)*(*m)), file);
 
