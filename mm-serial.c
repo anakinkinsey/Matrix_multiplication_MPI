@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	double* matrixB;
 	double* matrixC;
 	clock_t startMath, endMath, startIO, endIO, tt1, tt2;
-	double mathTime, ioTime, totalTime;
+	double mathTime, ioTime, totalTime, mflops1, mflops2;
 
 	tt1 = clock();
         while((opt = getopt(argc, argv, "A:B:C:")) != -1)
@@ -79,13 +79,20 @@ int main(int argc, char *argv[])
 	totalTime = ((double) (tt2 - tt1)) / CLOCKS_PER_SEC;
 	mathTime =((double) (endMath - startMath)) / CLOCKS_PER_SEC;
 	
+	mflops1 = (8 * (firstMR * secondMC))/mathTime;
+	mflops2 = (8 * (firstMR * secondMC))/totalTime;
+
 	printf("Time doing matrix multiplication: %f \n", mathTime);
 	printf("Time doing file IO: %f \n", ioTime);
 	printf("Time taken overall: %f \n", totalTime);	
-	
+	printf("m_flops_1: %f \n", mflops1);	
+	printf("m_flops_2: %f \n", mflops2);
+
 	free(matrixA);
 	free(matrixB);
 	free(matrixC);
+
+	return 0;
        
     }
     
