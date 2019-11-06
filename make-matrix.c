@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 
 	if(argc < 11)
     	{
-        printf("The proper usage is './make-matrix -m ## -n ## -l ## -u ## -o outputFile");
+        printf("The proper usage is './make-matrix -m ## -n ## -l ## -u ## -o outputFile\n");
         exit(0);
     	}
 	else
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 				case '?':
 					printf("Incorrect Input \nCorrect Usage: ");
 					printf("./make-matrix -m ## -n ## -l ## -u ## -o output_file\n");
-					printf("Where m = # of rows, n = # of columns");
+					printf("Where m = # of rows, n = # of columns\n");
 					exit(0);
 				break;
 				

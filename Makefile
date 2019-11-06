@@ -1,5 +1,5 @@
 CFLAGS = -g -Wall -Wstrict-prototypes
-OBJECTS = functions.o make-matrix print-matrix mm-serial
+OBJECTS = functions.o make-matrix print-matrix mm-serial demo MyMPI.o
 CC = gcc
 MCC = mpicc
 
@@ -17,8 +17,15 @@ mm-serial: mm-serial.c functions.o
 	@echo "	Matrix Multiplication Serial Command: ./mm-serial -i input_file"
 	$(CC) $(CFLAGS) mm-serial.c functions.o -o mm-serial -lm
 
+demo: demo.c MyMPI.o
+	@echo "Demo Program Command: mpirun -np ## ./demo -i input_file"
+	$(MCC) $(CFLAGS) demo.c MyMPI.o -o demo -lm
+
 functions.o: functions.c functions.h
 	$(CC) $(CFLAGS) -c functions.c functions.h
+
+MyMPI.o: MyMPI.c MyMPI.h
+	$(MCC) $(CFLAGS) -c MyMPI.c MyMPI.h
 
 clean:
 	rm -f $(OBJECTS) *.o *.h.gch core*

@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
     if(argc < 7)
     {
-        printf("The proper usage is './mm-serial -A inputFile -B inputFile -C outputFile");
+        printf("The proper usage is './mm-serial -A inputFile -B inputFile -C outputFile\n");
         exit(0);
     }
     else
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
                     break;
 
                 case '?':
-                    printf("The proper usage is './mm-serial -A inputFile -B inputFile -C outputFile");
+                    printf("The proper usage is './mm-serial -A inputFile -B inputFile -C outputFile\n");
         	exit(0);
                     break;
             
@@ -83,9 +83,9 @@ int main(int argc, char *argv[])
 	mflops1 = ((8 * (firstMR * secondMC))/mathTime)/1000000;
 	mflops2 = ((8 * (firstMR * secondMC))/totalTime)/1000000;
 
-	printf("Time doing matrix multiplication: %f \n", mathTime);
-	printf("Time doing file IO: %f \n", ioTime);
-	printf("Time taken overall: %f \n", totalTime);	
+	printf("Time doing matrix multiplication: %f Seconds\n", mathTime);
+	printf("Time doing file IO: %f Seconds\n", ioTime);
+	printf("Time taken overall: %f Seconds\n", totalTime);	
 	printf("m_flops_1: %f \n", mflops1);	
 	printf("m_flops_2: %f \n", mflops2);
 
