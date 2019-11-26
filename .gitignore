@@ -1,0 +1,6 @@
+*.dat
+make-matrix
+print-matrix
+mm-serial
+*.o
+*.gch
