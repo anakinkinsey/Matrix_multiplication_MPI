@@ -87,4 +87,30 @@ void matrix_multiply(int m, int n, int x, int y, double* matrix1, double* matrix
     }
 }
 
+void parallel_multiply(double *A, double *B, double **local_rows, int numRows, int numElements, int iter)
+{
+   int i;
+    //printf("Working with [");
+    double *temp = *local_rows;
+    //print_matrix(numRows, numElements, *local_rows);
+   for(i = 0; i < (numRows * numElements); i++)
+   {
+       //printf("%f", *local_rows[1]);
+       //printf("Adding %f to %f\n", (A[iter]*B[i]), temp[i]);
+       temp[i] = temp[i] + (A[iter] * B[i]);
+       //printf("%f ", B[i]);
+   }
+   *local_rows = temp; 
+   //printf("%f\n", A[iter]);
+    //printf("]\n");
+    
+
+   //for(i = 0; i < (Bm * Bn); i++)
+   //{
+   //    printf("%f", *local_rows[i]);
+   //}
+}
+
+
+
 

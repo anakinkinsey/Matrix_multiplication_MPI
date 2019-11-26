@@ -23,7 +23,7 @@ demo: demo.c MyMPI.o
 
 mm-parallel: mm-parallel.c functions.o MyMPI.o
 	@echo "	Matrix Multiplication Parallel Command: mpirun -np <int> ./mm-parallel -A input_file -B input_file -C output_file"
-	$(MCC) $(CFLAGS) mm-parallel.c functions.o MyMPI.o -o mm-serial -lm
+	$(MCC) $(CFLAGS) mm-parallel.c functions.o MyMPI.o -o mm-parallel -lm
 
 functions.o: functions.c functions.h
 	$(CC) $(CFLAGS) -c functions.c functions.h
