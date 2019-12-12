@@ -97,7 +97,7 @@ void parallel_multiply(double *A, double *B, double **local_rows, int numRows, i
    {
        //printf("%f", *local_rows[1]);
        //printf("Adding %f to %f\n", (A[iter]*B[i]), temp[i]);
-       temp[i] = temp[i] + (A[iter] * B[i]);
+       temp[i] = temp[i] + (A[iter + i/(int)numElements] * B[i]);
        //printf("%f ", B[i]);
    }
    *local_rows = temp; 
