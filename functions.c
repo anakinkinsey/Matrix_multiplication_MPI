@@ -67,7 +67,7 @@ void read_matrix(char* file_name, int* m, int* n, double** matrix)
 
 }
 
-void matrix_multiply(int m, int n, int x, int y, double* matrix1, double* matrix2, double ** matrix_out)
+void matrix_multiply(int m, int n, int x, int y, double* matrix1, double* matrix2, double** matrix_out)
 {
     *matrix_out = (double*)malloc(sizeof(double) * (m*y));
     int row, column, row_traverser, total;
@@ -86,18 +86,31 @@ void matrix_multiply(int m, int n, int x, int y, double* matrix1, double* matrix
         } 
     }
 }
-
+//*A: Astorage
+//*B: Bstorage
+//iter: currentRow for the process
+//numElements: numElements in the row
+//numRows: number of Rows
 void parallel_multiply(double *A, double *B, double **local_rows, int numRows, int numElements, int iter)
 {
-   int i;
-    //printf("Working with [");
+   int i, j, k;
+    printf("numRows: %d, numElements: %d\n", numRows, numElements);
     double *temp = *local_rows;
     //print_matrix(numRows, numElements, *local_rows);
-   for(i = 0; i < (numRows * numElements); i++)
+   for(i = iter; i < (iter + numRows); i++)
    {
        //printf("%f", *local_rows[1]);
        //printf("Adding %f to %f\n", (A[iter]*B[i]), temp[i]);
-       temp[i] = temp[i] + (A[iter + i/(int)numElements] * B[i]);
+       //printf("%d", i);
+      // temp[i] = temp[i] + (A[iter + i/(int)numElements] * B[i]);
+        for(j = i*numElements; j < (i*numElements +numRows); j++)
+        {
+            for(k = j*numElements - (i*numElements); k < ((j+1)*numElements - i*numElements); k++)
+            {
+                printf("A[%d] multiplying by B[%d] and storing in temp[%d]\n", j, k, i*numElements + k);
+                temp[(i*numElements) + k] = temp[((numElements*i) + k)] + (B[k] * A[j]);
+            }
+        }
        //printf("%f ", B[i]);
    }
    *local_rows = temp; 

@@ -75,23 +75,31 @@ int main(int argc, char **argv)
 	currentRow = BLOCK_LOW(rank, size, Am);
 	//printf("Process %d: %d", rank, numRows);
 	local_rows = (double *)malloc(numRows * numElements * sizeof(double));
-	r_partner = (rank + 1)%size;
-	l_partner = ((rank-1)+size) % size;
-	for(i = 0; i < size; i++)
-	{
+	if(size > 1){
+		r_partner = (rank + 1)%size;
+		l_partner = ((rank-1)+size) % size;
 		
-		parallel_multiply(Astorage, Bstorage, &local_rows, numRows, numElements, currentRow);
-		
-		//MPI_Sendrecv_replace(Bstorage, numRows * numElements, MPI_DOUBLE, l_partner, 99, r_partner, 99,MPI_COMM_WORLD, &status);
-		MPI_Sendrecv(Bstorage, numRows * numElements, MPI_DOUBLE, l_partner, 99, Bstorage, BLOCK_SIZE(r_partner, size, Am)*numElements, MPI_DOUBLE, r_partner, 99, MPI_COMM_WORLD, &status);
-		currentRow = (currentRow + numRows)%Am;
+		for(i = 0; i < size; i++)
+		{
+			printf("Current row for %d is %d", rank, currentRow);
+			parallel_multiply(Astorage, Bstorage, &local_rows, numRows, numElements, currentRow);
+			
+			//MPI_Sendrecv_replace(Bstorage, numRows * numElements, MPI_DOUBLE, l_partner, 99, r_partner, 99,MPI_COMM_WORLD, &status);
+			MPI_Sendrecv(Bstorage, numRows * numElements, MPI_DOUBLE, l_partner, 99, Bstorage, BLOCK_SIZE(r_partner, size, Am)*numElements, MPI_DOUBLE, r_partner, 99, MPI_COMM_WORLD, &status);
+			currentRow = (currentRow + numRows)%Am;//if that heifer wraps
+		}
 	}
-
-
-		for(i = 0; i < (numRows * numElements); i++)
-    	{
-       		printf("%f\n", local_rows[i]);
-    	}
+	else
+	{
+		printf("Only for single threaded\n");
+		parallel_multiply(Astorage, Bstorage, &local_rows, numRows, numElements, currentRow);
+	}
+	
+	for(i = 0; i < (numRows * numElements); i++)
+	{
+				printf("%f\n", local_rows[i]);
+	}
+	
 
 	
 
