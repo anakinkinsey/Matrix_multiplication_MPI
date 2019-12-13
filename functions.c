@@ -17,7 +17,8 @@ void make_matrix(int m, int n, int l, int u, double** matrix)
     srand(time(0));
     for(i = 0; i < (m*n); i++)
     {
-        (*matrix)[i] = (double) (rand() % ((u + 1) - l) + l);
+    	double num = RAND_MAX/(u-l);
+        (*matrix)[i] = l + (rand()/num);
     }
 
 
@@ -39,7 +40,7 @@ void print_matrix(int m, int n, double* matrix)
     int i;
     for(i = 0; i < m*n; i++)
     {
-            printf("%0.2f ", matrix[i]);
+            printf("%0.4f ", matrix[i]);
         	if((i+1)%n == 0)
         	{
             		printf("\n");
@@ -70,7 +71,8 @@ void read_matrix(char* file_name, int* m, int* n, double** matrix)
 void matrix_multiply(int m, int n, int x, int y, double* matrix1, double* matrix2, double** matrix_out)
 {
     *matrix_out = (double*)malloc(sizeof(double) * (m*y));
-    int row, column, row_traverser, total;
+    int row, column, row_traverser;
+    double total;
     //int row_array[m];
     //int column_array[n];  
     for(row = 0; row < m; row++)
@@ -80,7 +82,7 @@ void matrix_multiply(int m, int n, int x, int y, double* matrix1, double* matrix
             total = 0;
             for(row_traverser = 0; row_traverser < n; row_traverser++)
             {
-                total += matrix1[row * n + row_traverser] * matrix2[row_traverser * y + column];
+                total += matrix1[row * n + row_traverser] * (double)matrix2[row_traverser * y + column];
             }
             (*matrix_out)[row * y + column] = total;
         } 
@@ -91,29 +93,30 @@ void matrix_multiply(int m, int n, int x, int y, double* matrix1, double* matrix
 //iter: currentRow for the process
 //numElements: numElements in the row
 //numRows: number of Rows
-void parallel_multiply(double *A, double *B, double **local_rows, int numRows, int numElements, int iter)
+void parallel_multiply(double *A, double *B, double *local_rows, int numRows, int numElements, int Brow, int rank)
 {
-   int i, j, k;
-    printf("numRows: %d, numElements: %d\n", numRows, numElements);
-    double *temp = *local_rows;
-    //print_matrix(numRows, numElements, *local_rows);
-   for(i = iter; i < (iter + numRows); i++)
-   {
-       //printf("%f", *local_rows[1]);
-       //printf("Adding %f to %f\n", (A[iter]*B[i]), temp[i]);
-       //printf("%d", i);
-      // temp[i] = temp[i] + (A[iter + i/(int)numElements] * B[i]);
-        for(j = i*numElements; j < (i*numElements +numRows); j++)
+   int i, j, k, howDeep = numRows;
+    //printf("Brow is %d\n", Brow);
+ 
+    for(i = 0; i < (numRows); i++)
+    {
+        //printf("Brow is to %d: ", Brow);
+        for(j = (Brow) + (i*numElements); j < ((Brow) + (i*numElements) + howDeep); j++)
         {
-            for(k = j*numElements - (i*numElements); k < ((j+1)*numElements - i*numElements); k++)
+            //printf("Brow is to %d: ", Brow);
+           
+            for(k = (j%numRows)*numElements; k < (((j%numRows)*numElements) + numElements); k++)
             {
-                printf("A[%d] multiplying by B[%d] and storing in temp[%d]\n", j, k, i*numElements + k);
-                temp[(i*numElements) + k] = temp[((numElements*i) + k)] + (B[k] * A[j]);
+               //printf("temp is %d\n", temp);
+                //printf("Process %d on working with %d Grabbing %.2f, and %.2f    ", rank, Brow, A[j], B[k]);
+                
+                local_rows[(i * numElements) + k%numElements] += (B[k]) * A[j];
+                //printf("%d\n", ((i * numElements) + k%numElements));
             }
         }
-       //printf("%f ", B[i]);
-   }
-   *local_rows = temp; 
+    }
+
+   //*local_rows = temp; 
    //printf("%f\n", A[iter]);
     //printf("]\n");
     
