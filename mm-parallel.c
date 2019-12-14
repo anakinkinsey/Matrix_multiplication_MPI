@@ -10,24 +10,27 @@
 #include <string.h>
 #include "functions.h"
 #include "MyMPI.h"
+#include "timer.h"
 
 int main(int argc, char **argv)
 {
 	int rank,size;
-	int opt = 0, An, Am, Bn, Bm, numRows, numElements, i, r_partner, l_partner, currentRow,j;
+	int opt = 0, An, Am, Bn, Bm, numRows, numElements, i, r_partner, l_partner, currentRow;
 	char *inFile1, *inFile2, *outFile;
 	double **A, *Astorage;
 	double **B, *Bstorage;
 	double *local_rows, *bigC;
+	double startTime, endTime, comp_start, comp_end;
 	MPI_Status status;
+	
 	//MPI_Comm comm;
-	FILE* outputFile = fopen(outFile, "wb");
+	//FILE* outputFile = fopen(outFile, "wb");
 	//free(outFile);
 
 	MPI_Init(&argc, &argv);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
-	
+	GET_TIME(startTime);
 	 if(argc < 7)
     	{
 		if (rank == 0)
@@ -81,6 +84,7 @@ int main(int argc, char **argv)
 	{
 		local_rows[i] = 0;
 	}
+	GET_TIME(comp_start);
 	if(size > 1){
 		r_partner = (rank + 1)%size;
 		l_partner = ((rank-1)+size) % size;
@@ -109,6 +113,7 @@ int main(int argc, char **argv)
 		//printf("Only for single threaded\n");
 		parallel_multiply(Astorage, Bstorage, local_rows, numRows, numElements, currentRow, rank);
 	}
+	GET_TIME(comp_end);
 	
 	// for(i = 0; i < (numRows * numElements); i++)
 	// {
@@ -151,8 +156,16 @@ int main(int argc, char **argv)
 	// 	MPI_Ssend(local_rows, (numElements*numRows), MPI_DOUBLE, 0, 99, MPI_COMM_WORLD);
 	// }
 
-	
-
+	MPI_Barrier(MPI_COMM_WORLD);
+	GET_TIME(endTime);
+	if(rank == 0)
+	{
+		printf("Comp time: %.4f seconds\n", comp_end - comp_start);
+		printf("IO time: %.4f seconds\n", (endTime - startTime) - (comp_end-comp_start));
+		printf("Total time: %.4f seconds\n\n", endTime - startTime);
+		printf("MegaFlops(Comp time): %f\n", ((Am * An * Bn)/(comp_end - comp_start))/1000000);
+		printf("MegaFlops(Total time): %f\n", ((Am * An * Bn)/(endTime - startTime))/1000000);
+	}
 	MPI_Finalize();
 	
 	return(0);

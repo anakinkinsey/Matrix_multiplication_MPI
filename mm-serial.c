@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include "functions.h"
 #include <getopt.h>
-#include <time.h>
+#include "timer.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,10 +28,11 @@ int main(int argc, char *argv[])
         double* matrixA;
 	double* matrixB;
 	double* matrixC;
-	clock_t startMath, endMath, startIO, endIO, tt1, tt2;
-	double mathTime, ioTime, totalTime, mflops1, mflops2;
+	//clock_t startMath, endMath, startIO, endIO, tt1, tt2;
+	double mathTime, totalTime, mflops1, mflops2;
+	double startTime, endTime, comp_start, comp_end;
 
-	tt1 = clock();
+	GET_TIME(startTime);
         while((opt = getopt(argc, argv, "A:B:C:")) != -1)
 	{
             switch (opt)
@@ -54,40 +55,38 @@ int main(int argc, char *argv[])
             }
         }
 	
-	startIO = clock();
+	
 	read_matrix(inFile1,&firstMR,&firstMC, &matrixA);
 	read_matrix(inFile2,&secondMR,&secondMC, &matrixB);
-	endIO = clock();
+	
 
-	ioTime = ((double) (endIO - startIO)) / CLOCKS_PER_SEC;
+	
 	if(firstMC != secondMR)
 	{
 		printf("The dimensions %d x %d and %d x %d are not compatible\n", firstMR, firstMC, secondMR, secondMC);
 		exit(0);
 	}
-
-	startMath = clock();
+	GET_TIME(comp_start);
 	matrix_multiply(firstMR, firstMC, secondMR, secondMC, matrixA, matrixB, &matrixC);
-	endMath = clock();
+	GET_TIME(comp_end);
 	
-	startIO = clock();
 	write_matrix( outFile, firstMR, secondMC, matrixC);
-	endIO = clock();	
+		
+	GET_TIME(endTime);
 
-	tt2 = clock();
 
-	ioTime += ((double) (endIO - startIO)) / CLOCKS_PER_SEC;
-	totalTime = ((double) (tt2 - tt1)) / CLOCKS_PER_SEC;
-	mathTime =((double) (endMath - startMath)) / CLOCKS_PER_SEC;
+	
+	totalTime = endTime - startTime;
+	mathTime = comp_end - comp_start;
 	
 	mflops1 = ((firstMR * firstMC * secondMC)/mathTime)/1000000;
 	mflops2 = ((firstMR * firstMC * secondMC)/totalTime)/1000000;
 
-	printf("Time doing matrix multiplication: %f Seconds\n", mathTime);
-	printf("Time doing file IO: %f Seconds\n", ioTime);
-	printf("Time taken overall: %f Seconds\n", totalTime);	
-	printf("m_flops_1: %f \n", mflops1);	
-	printf("m_flops_2: %f \n", mflops2);
+	printf("Comp time: %.4f seconds\n", mathTime);
+	printf("IO time: %.4f seconds\n", totalTime - mathTime);
+	printf("Total time: %.4f seconds\n\n", totalTime);
+	printf("MegaFlops(Comp time): %f\n", mflops1);
+	printf("MegaFlops(Total time): %f\n", mflops2);
 
 	free(matrixA);
 	free(matrixB);
