@@ -1,3 +1,9 @@
+/**
+ * 473 Final Project
+ * Anakin Kinsey & Cory Rothenberger
+ * 10/27/2019
+ * Fall 2019
+**/
 #ifndef _TIMER_H_
 #define _TIMER_H_
 

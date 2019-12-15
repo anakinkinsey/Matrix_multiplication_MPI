@@ -74,13 +74,15 @@ void matrix_multiply(int m, int n, int x, int y, double* matrix1, double* matrix
     int row, column, row_traverser;
     double total;
     //int row_array[m];
-    //int column_array[n];  
-    for(row = 0; row < m; row++)
+    //int column_array[n];
+
+    //Classic pour method
+    for(row = 0; row < m; row++)//traverses A rows
     {
-        for(column = 0; column < y; column++)
+        for(column = 0; column < y; column++)//traverses A columns
         {
             total = 0;
-            for(row_traverser = 0; row_traverser < n; row_traverser++)
+            for(row_traverser = 0; row_traverser < n; row_traverser++)//traverses B
             {
                 total += matrix1[row * n + row_traverser] * (double)matrix2[row_traverser * y + column];
             }
@@ -101,7 +103,7 @@ void parallel_multiply(double *A, double *B, double *local_rows, int numRows, in
     for(i = 0; i < (numRows); i++)
     {
         //printf("Brow is to %d: ", Brow);
-        for(j = (Brow) + (i*numElements); j < ((Brow) + (i*numElements) + howDeep); j++)
+        for(j = (Brow) + (i*numElements); j < ((Brow) + (i*numElements) + howDeep); j++)//j is a function of the current Brow and the outer i value
         {
             //printf("Brow is to %d: ", Brow);
            

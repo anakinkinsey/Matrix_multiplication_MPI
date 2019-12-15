@@ -1,8 +1,9 @@
-/*
-	Cory Rothenberger & Anakin Kinsey
-	CSCI 473
-	Team Project 
-*/
+/**
+ * 473 Final Project
+ * Anakin Kinsey & Cory Rothenberger
+ * 10/27/2019
+ * Fall 2019
+**/
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
@@ -156,15 +157,15 @@ int main(int argc, char **argv)
 	// 	MPI_Ssend(local_rows, (numElements*numRows), MPI_DOUBLE, 0, 99, MPI_COMM_WORLD);
 	// }
 
-	MPI_Barrier(MPI_COMM_WORLD);
+	MPI_Barrier(MPI_COMM_WORLD);//syncs project
 	GET_TIME(endTime);
 	if(rank == 0)
 	{
 		printf("Comp time: %.4f seconds\n", comp_end - comp_start);
 		printf("IO time: %.4f seconds\n", (endTime - startTime) - (comp_end-comp_start));
 		printf("Total time: %.4f seconds\n\n", endTime - startTime);
-		printf("MegaFlops(Comp time): %f\n", ((Am * An * Bn)/(comp_end - comp_start))/1000000);
-		printf("MegaFlops(Total time): %f\n", ((Am * An * Bn)/(endTime - startTime))/1000000);
+		printf("MegaFlops(Comp time): %f\n", (((double)Am * (double)An * (double)Bn)/(comp_end - comp_start))/1000000); //casting to double in the case when you go over 2^31 when determining n^3
+		printf("MegaFlops(Total time): %f\n", (((double)Am * (double)An * (double)Bn)/(endTime - startTime))/1000000);
 	}
 	MPI_Finalize();
 	
